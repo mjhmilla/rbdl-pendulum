@@ -1,0 +1,42 @@
+PROJECT (pendulumDynamics)
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
+
+SET(CUSTOM_RBDL_PATH "" CACHE PATH "Path to specific RBDL Installation")
+
+
+
+LIST( APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR} )
+
+FIND_PACKAGE ( RBDL COMPONENTS LUAMODEL)
+FIND_PACKAGE (Eigen3 3.0.0 REQUIRED)
+FIND_PACKAGE (Lua51 REQUIRED)
+
+
+
+SET(BOOST_INC_DIR
+  /usr/include
+  CACHE STRING
+  "Location of the BOOST header files")
+
+
+INCLUDE_DIRECTORIES ( 
+	${RBDL_INCLUDE_DIR} 
+	${EIGEN3_INCLUDE_DIR} 
+	${LUA_INCLUDE_DIR}
+    	${BOOST_INC_DIR} 
+)
+
+
+
+ADD_EXECUTABLE(pendulum
+  src/pendulumDynamics_IntegrationWithBoost.cc 
+  src/csvtools.h 
+  src/csvtools.cc)	  
+	
+TARGET_LINK_LIBRARIES ( pendulum
+  ${RBDL_LIBRARY}
+  ${RBDL_LUAMODEL_LIBRARY}
+  ${LUA_LIBRARIES}  
+  )
+
+
